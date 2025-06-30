@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notificações - Professores</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .btn { padding: 10px 15px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <a href="/" class="btn">🏠 Voltar</a>
+    <h2>Notificações</h2>
+    <ul>
+        {% for msg in mensagens %}
+            <li>{{ msg }}</li>
+        {% else %}
+            <li>Nenhuma notificação ainda.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
