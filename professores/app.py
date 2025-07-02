@@ -28,7 +28,7 @@ def index():
         problema = request.form['problema']
         departamento = request.form['departamento']
         curso = request.form['curso']
-        msg = f"Curso: {curso} | Depto: {departamento} | Sala {sala} - Problema: {problema}"
+        msg = f"Curso: {curso} | Departamento: {departamento} | Sala {sala} - Problema: {problema}"
         cliente.publish("escola/salas/problemas", msg)
         return redirect('/')
     return render_template('index.html', mensagens=mensagens)

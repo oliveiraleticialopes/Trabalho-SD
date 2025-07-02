@@ -7,32 +7,33 @@
         .btn { display: inline-block; background: #07ab30; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
         .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         ul { list-style: none; padding: 0; }
-        ul li { background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        /* Mensagens de problema */
+        .problema { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; padding: 10px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
       <a href="/" class="btn">Voltar</a>
       <h2>Problemas Recebidos</h2>
-      <ul id="notificacoes-list">
-         {% for problema in problemas %}
-              <li>{{ problema }}</li>
-          {% else %}
-              <li>Nenhum problema recebido.</li>
-          {% endfor %}
-      </ul>
-      <script>
-        async function fetchNotificacoes() {
-          const res = await fetch('/api/notificacoes');
-          const msgs = await res.json();
-          const ul = document.getElementById('notificacoes-list');
-          ul.innerHTML = msgs.length
-            ? msgs.map(m => `<li>${m}</li>`).join('')
-            : '<li>Nenhum problema recebido.</li>';
-        }
-        window.onload = fetchNotificacoes;
-        setInterval(fetchNotificacoes, 5000);
-      </script>
+      <ul id="notificacoes-list"></ul>
+       <script>
+         async function fetchNotificacoes() {
+           const res = await fetch('/api/notificacoes');
+           const msgs = await res.json();
+           const ul = document.getElementById('notificacoes-list');
+          if (!msgs.length) {
+            ul.innerHTML = '<li class="problema">Nenhum problema recebido.</li>';
+            return;
+          }
+          ul.innerHTML = msgs.map(m => {
+            const [info, prob] = m.split(' - Problema: ');
+            const dados = info.split(' | ');
+            return `<li class="problema">${dados.map(d => `<div>${d}</div>`).join('')}<div>Problema: ${prob}</div></li>`;
+          }).join('');
+         }
+         window.onload = fetchNotificacoes;
+         setInterval(fetchNotificacoes, 5000);
+       </script>
     </div>
 </body>
 </html>
