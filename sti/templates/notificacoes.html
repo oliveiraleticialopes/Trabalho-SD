@@ -19,7 +19,8 @@
        <script>
          async function fetchNotificacoes() {
            const res = await fetch('/api/notificacoes');
-           const msgs = await res.json();
+           // Inverte a ordem para mostrar problemas mais recentes primeiro
+           const msgs = (await res.json()).slice().reverse();
            const ul = document.getElementById('notificacoes-list');
           if (!msgs.length) {
             ul.innerHTML = '<li class="problema">Nenhum problema recebido.</li>';
