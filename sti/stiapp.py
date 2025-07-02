@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import paho.mqtt.client as mqtt
 import threading
 
@@ -33,20 +33,14 @@ def index():
         return redirect('/notificacoes')
     return render_template('index.html', problemas=problemas)
 
-@app.route('/resolver', methods=['GET', 'POST'])
-def resolver():
-    if request.method == 'POST':
-        sala = request.form['sala']
-        departamento = request.form['departamento']
-        curso = request.form['curso']
-        confirmacao = f"✅ Problema resolvido - Curso: {curso}, Depto: {departamento}, Sala: {sala}"
-        cliente.publish("escola/salas/solucoes", confirmacao)
-        return redirect('/')
-    return render_template('resolver_problema.html', problemas=problemas)
-
 @app.route('/notificacoes')
 def notificacoes():
     return render_template('notificacoes.html', problemas=problemas)
+
+# Endpoint para retornar notificações como JSON para atualização assíncrona
+@app.route('/api/notificacoes')
+def api_notificacoes():
+    return jsonify(problemas)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

@@ -3,34 +3,41 @@
 <head>
     <title>Professores - Reportar Problemas</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .btn { display: inline-block; background: #df0b0b; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 15px; }
+        select, input, textarea, button { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #df0b0b; color: #fff; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
-    <!-- Botão para acessar apenas notificações -->
-    <div><a href="/notificacoes" style="padding:10px 15px; background:#007BFF; color:white; text-decoration:none; border-radius:5px; margin-bottom:20px; display:inline-block;">Notificações</a></div>
-    <div style="display:flex; justify-content:center; margin-top:20px;">
-      <div style="width:50%;">
-        <h2>Reportar Problemas Técnicos</h2>
-        <form method="post">
-            <label>Sala:</label><br>
-            <input type="text" name="sala" required><br><br>
-            <label>Departamento:</label><br>
-            <select name="departamento" required>
-                <option value="CCN">Centro de Ciências da Natureza (CCN)</option>
-                <option value="CCS">Centro de Ciências da Saúde (CCS)</option>
-                <option value="CCHL">Centro de Ciências Humanas e Letras (CCHL)</option>
-                <option value="CCA">Centro de Ciências Agrárias (CCA)</option>
-                <option value="CT">Centro de Tecnologia (CT)</option>
-                <option value="CCE">Centro de Educação (CCE)</option>
-            </select><br><br>
-            <label>Curso:</label><br>
-            <input type="text" name="curso" required><br><br>
-            <label>Problema:</label><br>
-            <textarea name="problema" required></textarea><br><br>
-            <button type="submit">📤 Enviar Problema</button>
-        </form>
-      </div>
+    <a href="/notificacoes" class="btn">Notificações</a>
+    <div class="container">
+         <h2>Reportar Problemas Técnicos</h2>
+         <form method="post">
+             <label>Departamento:</label>
+             <select name="departamento" required>
+                 <option value="CCN">Centro de Ciências da Natureza (CCN)</option>
+                 <option value="CCS">Centro de Ciências da Saúde (CCS)</option>
+                 <option value="CCHL">Centro de Ciências Humanas e Letras (CCHL)</option>
+                 <option value="CCA">Centro de Ciências Agrárias (CCA)</option>
+                 <option value="CT">Centro de Tecnologia (CT)</option>
+                 <option value="CCE">Centro de Educação (CCE)</option>
+             </select>
+             
+             <label>Curso:</label>
+             <input type="text" name="curso" required>
+             
+             <label>Sala:</label>
+             <input type="text" name="sala" required>
+             
+             <label>Problema:</label>
+             <textarea name="problema" required></textarea>
+             
+             <button type="submit" class="btn">Enviar Problema</button>
+         </form>
     </div>
 </body>
 </html>

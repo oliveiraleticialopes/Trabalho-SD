@@ -3,19 +3,36 @@
 <head>
     <title>Notificações - Professores</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .btn { padding: 10px 15px; background: #007BFF; color: white; text-decoration: none; border-radius: 5px; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .btn { display: inline-block; background: #df0b0b; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        ul { list-style: none; padding: 0; }
+        ul li { background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
-    <a href="/" class="btn">🏠 Voltar</a>
-    <h2>Notificações</h2>
-    <ul>
+    <div class="container">
+      <a href="/" class="btn">Voltar</a>
+      <h2>Notificações</h2>
+      <ul id="notificacoes-list">
         {% for msg in mensagens %}
             <li>{{ msg }}</li>
         {% else %}
             <li>Nenhuma notificação ainda.</li>
         {% endfor %}
-    </ul>
+      </ul>
+      <script>
+        async function fetchNotificacoes() {
+          const res = await fetch('/api/notificacoes');
+          const msgs = await res.json();
+          const ul = document.getElementById('notificacoes-list');
+          ul.innerHTML = msgs.length
+            ? msgs.map(m => `<li>${m}</li>`).join('')
+            : '<li>Nenhuma notificação ainda.</li>';
+        }
+        window.onload = fetchNotificacoes;
+        setInterval(fetchNotificacoes, 5000);
+      </script>
+    </div>
 </body>
 </html>
