@@ -28,7 +28,7 @@ def index():
         departamento = request.form['departamento']
         curso = request.form['curso']
         sala = request.form['sala']
-        confirmacao = f" Problema Solucionado - Departamento: {departamento}, Curso: {curso}, Sala: {sala}"
+        confirmacao = f"Problema Solucionado - Departamento: {departamento}, Curso: {curso}, Sala: {sala}"
         cliente.publish("escola/salas/solucoes", confirmacao)
         return redirect('/notificacoes')
     return render_template('index.html', problemas=problemas)
