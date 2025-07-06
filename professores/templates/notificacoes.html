@@ -29,17 +29,23 @@
             return;
           }
           ul.innerHTML = msgs.map(m => {
+            // detecta mensagem de solução enviada pelo STI (começa com ✅)
             if (m.startsWith('✅')) {
-              // mensagem de solução
-              const detalhes = m.split(' - ')[1] || '';
+              // remove emoji e divide detalhes após ' - '
+              const detalhes = m.substring(m.indexOf(' - ') + 3) || '';
               const campos = detalhes.split(', ');
-              return `<li class="solucao"><strong>Problema Solucionado</strong>${campos.map(c => `<div>${c}</div>`).join('')}</li>`;
-            } else {
-              // mensagem de problema
-              const [info, prob] = m.split(' - Problema: ');
-              const dados = info.split(' | ');
-              return `<li class="problema">${dados.map(d => `<div>${d}</div>`).join('')}<div>Problema: ${prob}</div></li>`;
+              return `<li class="solucao">
+                <div><strong>Problema Solucionado</strong></div>
+                ${campos.map(c => `<div>${c}</div>`).join('')}
+              </li>`;
             }
+            // mensagem de problema enviada pelos professores
+            const [info, prob] = m.split(' - Problema: ');
+            const dados = info.split(' | ');
+            return `<li class="problema">
+              ${dados.map(d => `<div>${d}</div>`).join('')}
+              <div>Problema: ${prob}</div>
+            </li>`;
           }).join('');
         }
         window.onload = fetchNotificacoes;

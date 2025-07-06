@@ -7,6 +7,8 @@
         .btn { display: inline-block; background: #07ab30; color: #fff; text-decoration: none; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
         .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         ul { list-style: none; padding: 0; }
+        /* Mensagens de solução enviadas pelo STI */
+        .solucao { background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; padding: 10px; margin-bottom: 10px; }
         /* Mensagens de problema */
         .problema { background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; padding: 10px; margin-bottom: 10px; }
     </style>
@@ -16,25 +18,35 @@
       <a href="/" class="btn">Voltar</a>
       <h2>Problemas Recebidos</h2>
       <ul id="notificacoes-list"></ul>
-       <script>
-         async function fetchNotificacoes() {
-           const res = await fetch('/api/notificacoes');
-           // Inverte a ordem para mostrar problemas mais recentes primeiro
-           const msgs = (await res.json()).slice().reverse();
-           const ul = document.getElementById('notificacoes-list');
+      <script>
+        async function fetchNotificacoes() {
+          const res = await fetch('/api/notificacoes');
+          const msgs = (await res.json()).slice().reverse();
+          const ul = document.getElementById('notificacoes-list');
           if (!msgs.length) {
             ul.innerHTML = '<li class="problema">Nenhum problema recebido.</li>';
             return;
           }
           ul.innerHTML = msgs.map(m => {
+            // Mensagens de solução do STI
+            if (m.includes('Problema Solucionado')) {
+              const detalhes = m.split(' - ')[1] || '';
+              const campos = detalhes.split(', ');
+              return `<li class="solucao"><strong>Problema Solucionado</strong>${
+                campos.map(c => `<div>${c}</div>`).join('')
+              }</li>`;
+            }
+            // Mensagens de problema enviadas pelos professores
             const [info, prob] = m.split(' - Problema: ');
             const dados = info.split(' | ');
-            return `<li class="problema">${dados.map(d => `<div>${d}</div>`).join('')}<div>Problema: ${prob}</div></li>`;
+            return `<li class="problema">${
+              dados.map(d => `<div>${d}</div>`).join('')
+            }<div>Problema: ${prob}</div></li>`;
           }).join('');
-         }
-         window.onload = fetchNotificacoes;
-         setInterval(fetchNotificacoes, 5000);
-       </script>
+        }
+        window.onload = fetchNotificacoes;
+        setInterval(fetchNotificacoes, 5000);
+      </script>
     </div>
 </body>
 </html>
